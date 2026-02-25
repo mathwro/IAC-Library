@@ -12,21 +12,19 @@ type githubOidcFederatedCredentialType = {
 param projectName string
 
 @description('Location for all resources')
-param location string
+param location string = deployment().location
 
 @description('Github OIDC federated credential configuration for the user assigned managed identity')
-param githubOidcFederatedCredential githubOidcFederatedCredentialType = {
-  organization: ''
-  repository: ''
-  entity: ''
-  target: ''
-}
+param githubOidcFederatedCredential githubOidcFederatedCredentialType
 
 @description('Assign Storage Blob Data Contributor role to the user')
 param assignRoleToUser bool = false
 
 // Variables
-var uniqueStringValue = uniqueString(subscription().subscriptionId, projectName)
+
+// 4 last characters of a unique string based on subscription ID and project name to ensure uniqueness of resource names across deployments
+var uniqueStringValue = substring(uniqueString(subscription().subscriptionId, projectName), 0, 4)
+
 var tags = {
     project: projectName
     purpose: 'Terraform'
@@ -34,7 +32,7 @@ var tags = {
 
 // Resources
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
-  name: 'rg-${projectName}-${uniqueStringValue}'
+  name: 'rg-${projectName}'
   location: location
   tags: tags
 }

@@ -84,7 +84,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 }
 
 resource roleAssignment_user 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (assignRoleToUser) {
-  name: guid(storageAccount.id, uami.id, 'Storage Blob Data Contributor')
+  name: guid(storageAccount.id, deployer().objectId, 'Storage Blob Data Contributor')
   scope: storageAccount
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Contributor role
