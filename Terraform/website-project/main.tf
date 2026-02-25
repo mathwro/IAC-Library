@@ -3,9 +3,15 @@ resource "random_integer" "suffix" {
   max = 99999
 }
 
+resource "azurerm_resource_group" "new-rg" {
+  count    = var.new_resource_group_name == "" ? 0 : 1
+  location = var.location
+  name     = var.new_resource_group_name
+}
+
 resource "azurerm_static_web_app" "swa" {
   name                = "swa-${var.project_name}-${var.environment}-${random_integer.suffix.result}"
-  resource_group_name = data.azurerm_resource_group.rg.name
+  resource_group_name = coalesce(data.azurerm_resource_group.existing-rg[0].name, azurerm_resource_group.new-rg[0].name)
   location            = var.location
   sku_tier            = var.swa_sku
   sku_size            = var.swa_sku
@@ -75,7 +81,7 @@ resource "azurerm_dns_txt_record" "custom_domain_validation" {
 
 resource "azurerm_storage_account" "backend" {
   name                     = "str${var.project_name}${var.environment}${random_integer.suffix.result}"
-  resource_group_name      = data.azurerm_resource_group.rg.name
+  resource_group_name      = coalesce(data.azurerm_resource_group.existing-rg[0].name, azurerm_resource_group.new-rg[0].name)
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"

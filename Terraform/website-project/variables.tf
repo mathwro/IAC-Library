@@ -3,9 +3,16 @@ variable "project_name" {
   type        = string
 }
 
-variable "resource_group_name" {
+variable "new_resource_group_name" {
   description = "The name of the resource group."
   type        = string
+  default     = ""
+}
+
+variable "existing_resource_group_name" {
+  description = "The name of an existing resource group to use instead of creating a new one."
+  type        = string
+  default     = ""
 }
 
 variable "location" {
