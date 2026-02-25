@@ -26,7 +26,7 @@ variable "environment" {
 }
 
 variable "swa_sku" {
-  description = "The SKU for the Static Web App (Free, Standard, or Premium)"
+  description = "The SKU for the Static Web App (Free or Standard)"
   type        = string
   default     = "Free"
 
