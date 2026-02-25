@@ -47,7 +47,7 @@ resource "azurerm_static_web_app_custom_domain" "custom_domain" {
 
   lifecycle {
     precondition {
-      condition = local.is_apex_domain || endswith(local.custom_domain_lower, ".${local.dns_zone_name_lower}")
+      condition     = local.is_apex_domain || endswith(local.custom_domain_lower, ".${local.dns_zone_name_lower}")
       error_message = "custom_domain must be the same as existing_dns_zone_name (apex) or a subdomain of it."
     }
   }
