@@ -88,5 +88,6 @@ variable "existing_dns_zone_resource_group" {
 variable "ENV_Variables" {
   description = "The Google Client ID for authentication"
   type        = map(string)
+  sensitive   = true
   default     = {}
 }
